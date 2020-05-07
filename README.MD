@@ -7,6 +7,9 @@ login = QUAY_USERNAME plaintext value
 password = QUAY_PASSWORD plaintext value
 
 
+1. build the image
+$ docker build -t github-secrets-generator .
 
-$ docker run --rm -it secret ${GITHUB_TOKEN} github-org/github-repo ${login} ${password}
+2. run command
+$ docker run --rm -it github-secrets-generator ${GITHUB_TOKEN} github-org/github-repo ${login} ${password}
 
