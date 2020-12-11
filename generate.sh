@@ -16,5 +16,11 @@ ENCODED_PASSWORD=$(echo ${ENCRYPT_RESULT}  | jq -r .password )
 
 echo "KEY_ID is ${KEY_ID}"
 
-curl -H "Authorization: token ${GITHUB_TOKEN}"  -X PUT -H "Content-Type: application/json" -d "{\"encrypted_value\":\"${ENCODED_LOGIN}\",\"key_id\":\"${KEY_ID}\"}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets/QUAY_USERNAME
-curl -H "Authorization: token ${GITHUB_TOKEN}"  -X PUT -H "Content-Type: application/json" -d "{\"encrypted_value\":\"${ENCODED_PASSWORD}\",\"key_id\":\"${KEY_ID}\"}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets/QUAY_PASSWORD
+echo "secrets list [before]:"
+curl -s -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets
+
+curl -H "Authorization: token ${GITHUB_TOKEN}"  -X PUT -H "Content-Type: application/json" -d "{\"encrypted_value\":\"${ENCODED_LOGIN}\",\"key_id\":\"${KEY_ID}\"}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets/DOCKERHUB_USERNAME
+curl -H "Authorization: token ${GITHUB_TOKEN}"  -X PUT -H "Content-Type: application/json" -d "{\"encrypted_value\":\"${ENCODED_PASSWORD}\",\"key_id\":\"${KEY_ID}\"}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets/DOCKERHUB_PASSWORD
+
+echo "secrets list [after]:"
+curl -s -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets
