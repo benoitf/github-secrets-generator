@@ -32,3 +32,37 @@ Or, to save a pair of secrets:
 ```bash
 $ podman run --rm -it github-secrets-generator ${GITHUB_TOKEN} github-org/github-repo QUAY_USERNAME ${QUAY_USERNAME} QUAY_PASSWORD ${QUAY_PASSWORD}
 ```
+
+3. to load a set of secrets from a file, assuming each line of the file is in the format:
+
+```
+SECRET_VARIABLE1 SECRET_PLAINTEXT_VALUE1
+SECRET_VARIABLE2 SECRET_PLAINTEXT_VALUE2
+...
+```
+
+Run this:
+
+```
+uploadSecretsFromFile() 
+{
+    secretfile=$1
+    GH_ORG_REPO=$2
+    if [[ ! $GITHUB_TOKEN ]]; then echo "Must export a valid GITHUB_TOKEN to run this script."; exit 1; fi
+    echo "In github.com/${GH_ORG_REPO}, update:"
+    while IFS= read -r myline
+    do
+        myVAR=${myline% *}
+        myVAL=${myline#* }
+        if [[ $myVAR ]] && [[ $myVAL ]]; then
+            echo "* $myVAR"
+            podman run --rm github-secrets-generator "${GITHUB_TOKEN}" "${GH_ORG_REPO}" "${myVAR}" "${myVAL}"
+        fi
+        unset myVAR
+        unset myVAL
+    done <"$secretfile"
+}
+
+uploadSecretsFromFile secretfile.txt my-org/my-repo
+
+```
