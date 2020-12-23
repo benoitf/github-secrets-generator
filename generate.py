@@ -7,7 +7,10 @@ key = sys.argv[1]
 # first secret could be a login
 firstSecret = sys.argv[2]
 # second secret could be a password, ot omitted if only using a key/token
-secondSecret = sys.argv[3]
+if len(sys.argv) > 3:
+  secondSecret = sys.argv[3]
+else:
+  secondSecret = ""
 
 def encrypt(public_key: str, secret_value: str) -> str:
     """Encrypt a Unicode string using the public key."""
@@ -17,7 +20,7 @@ def encrypt(public_key: str, secret_value: str) -> str:
     return b64encode(encrypted).decode("utf-8")
 
 encodedfirstSecret = encrypt(key, firstSecret)
-if secondSecret:
+if secondSecret != "":
   result = {
     "firstSecret": encodedfirstSecret,
     "secondSecret": encrypt(key, secondSecret)
