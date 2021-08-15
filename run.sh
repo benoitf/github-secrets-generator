@@ -54,12 +54,13 @@ Example: $0 --build
 To check if a secret already exists in a repo:
 
 Usage: $0 -r [GH org/project] [SECRET_TO_CHECK]
-Example: $0 -r eclipse/che CHE_BOT_GITHUB_TOKEN
+Example: $0 -r eclipse-che/che-theia CHE_BOT_GITHUB_TOKEN
+Example: $0 -r che-incubator/jetbrains-editor-images CHE_INCUBATOR_BOT_GITHUB_TOKEN
 
 To upload 1 or more secrets from a file (one per line):
 
 Usage: $0 -r [GH org/project] -f [SECRET_FILE]
-Example: $0 -r eclipse/che -f mykeys.txt
+Example: $0 -r eclipse-che/che-dashboard -f mykeys.txt
 
 Plaintext secret file format: one entry per line, key-value separated by a space
 
