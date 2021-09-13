@@ -14,6 +14,10 @@ if [ ! $KEY_ID ]; then echo "Error: could not read public key from https://api.g
 echo -n "Number of secrets: "
 curl -sSL -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets | jq '.total_count'
 
-echo "Secret ${FIRST_VAR}:"
-curl -sSL -H "Authorization: token ${GITHUB_TOKEN}"  -X GET -H "Accept: application/vnd.github.v3+json" \
- https://api.github.com/repos/${GITHUB_REPO}/actions/secrets/${FIRST_VAR}
+if [[ -n ${FIRST_VAR} ]] && [[ ${FIRST_VAR} != "--list" ]]; then 
+    echo "Secret ${FIRST_VAR}:"
+    curl -sSL -H "Authorization: token ${GITHUB_TOKEN}"  -X GET -H "Accept: application/vnd.github.v3+json" \
+    https://api.github.com/repos/${GITHUB_REPO}/actions/secrets/${FIRST_VAR}
+else
+    curl -sSL -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${GITHUB_REPO}/actions/secrets | jq '.secrets[].name'
+fi
