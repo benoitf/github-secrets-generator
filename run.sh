@@ -20,7 +20,9 @@ checkIfSecretExists()
     if [[ $SECRET_TO_CHECK == "" ]]; then usage; fi
     echo "In github.com/${GH_ORG_REPO}, fetch:"
     for myVAR in $SECRET_TO_CHECK; do
-        echo "* $myVAR"
+        if [[ $SECRET_TO_CHECK != "--list" ]]; then 
+            echo "* $myVAR"
+        fi
         podman run --rm --entrypoint /checkIfSecretExists.sh github-secrets-generator "${GITHUB_TOKEN}" "${GH_ORG_REPO}" "${myVAR}"
     done
 }
@@ -56,6 +58,11 @@ To check if a secret already exists in a repo:
 Usage: $0 -r [GH org/project] [SECRET_TO_CHECK]
 Example: $0 -r eclipse-che/che-theia CHE_BOT_GITHUB_TOKEN
 Example: $0 -r che-incubator/jetbrains-editor-images CHE_INCUBATOR_BOT_GITHUB_TOKEN
+
+To list existing secrets by name:
+
+Usage: $0 -r [GH org/project] --list
+Example: $0 -r eclipse-che/che-theia --list
 
 To upload 1 or more secrets from a file (one per line):
 
